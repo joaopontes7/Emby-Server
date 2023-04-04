@@ -1,14 +1,14 @@
 FROM ubuntu:latest
 
-RUN sudo apt-get update && sudo add-apt-repository ppa:qbittorrent-team/qbittorrent-stable
+RUN add-apt-repository ppa:qbittorrent-team/qbittorrent-stable
 
-RUN sudo apt-get install qbittorrent-nox
+RUN apt-get update 
 
-RUN sudo adduser qbtuser && sudo gpasswd -a qbtuser sudo 
+RUN apt-get install qbittorrent
 
-RUN sudo echo -e '[Unit]\n Description=qBittorrent Daemon Service\n After=network.target\n \n [Service]\n Type=forking\n User=qbtuser\n ExecStart=/usr/bin/qbittorrent-nox -d\n \n [Install]\n WantedBy=multi-user.target'| sudo tee /etc/systemd/system/qbittorrent-nox.service
+RUN adduser qbtuser &&  gpasswd -a qbtuser  
 
-RUN sudo systemctl enable qbittorrent-nox && sudo systemctl start qbittorrent-nox
+RUN systemctl enable qbittorrent && systemctl start qbittorrent
 
 #WORKDIR /usr/src/app
 
