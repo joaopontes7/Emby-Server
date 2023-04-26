@@ -1,15 +1,15 @@
-FROM ubuntu:latest
+FROM centos:7
 
-RUN add-apt-repository ppa:qbittorrent-team/qbittorrent-stable
+ENV DEFAULT_EMBY_VERSION 4.7.11.0
 
-RUN apt-get update 
+RUN set -ex; \
+yum install -y https://github.com/MediaBrowser/Emby.Releases/releases/download/${EMBY_VERSION:-${DEFAULT_EMBY_VERSION}}/emby-server-rpm_${EMBY_VERSION:-${DEFAULT_EMBY_VERSION}}_x86_64.rpm; \
+yum clean all; \
+rm -rf /var/cache/yum; \
+rm -rf /tmp/*
 
-RUN apt-get install qbittorrent
+USER emby
+WORKDIR /opt/emby-server
+ENV EMBY_DATA /var/lib/emby
 
-RUN adduser qbtuser &&  gpasswd -a qbtuser  
-
-RUN systemctl enable qbittorrent && systemctl start qbittorrent
-
-#WORKDIR /usr/src/app
-
-#CMD ["java", "-Xmx728m", "-jar", "acq-merchant-info-orc.jar", "--spring.profiles.active=${env}"]
+CMD /opt/emby-server/bin/emby-server
