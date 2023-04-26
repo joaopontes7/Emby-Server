@@ -1,2 +1,2 @@
-# qBittorrent
-qBittorrent in docker-compose or Dockerfile
+# Emby Server 
+Emby Server in docker-compose and Dockerfile
